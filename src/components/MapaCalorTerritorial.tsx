@@ -6,8 +6,9 @@ import { Layers, MapPin, Satellite } from "lucide-react";
 
 type PuntoCalor = { lat: number; lng: number; intensidad: number };
 type Props = { puntos?: PuntoCalor[] };
+const SIN_PUNTOS: PuntoCalor[] = [];
 
-export default function MapaCalorTerritorial({ puntos = [] }: Props) {
+export default function MapaCalorTerritorial({ puntos = SIN_PUNTOS }: Props) {
   const host = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LeafletMap | null>(null);
   const heatRef = useRef<{ remove: () => void } | null>(null);
@@ -52,16 +53,22 @@ export default function MapaCalorTerritorial({ puntos = [] }: Props) {
   }, [puntos]);
 
   useEffect(() => {
-    if (!mapRef.current || !baseRef.current) return;
-    const L = requireLeafletLayer();
-    const url = base === "osm"
-      ? "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      : "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
-    const attribution = base === "osm"
-      ? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      : "Tiles &copy; Esri";
-    baseRef.current.remove();
-    baseRef.current = L.tileLayer(url, { attribution, maxZoom: 19 }).addTo(mapRef.current);
+    let cancelled = false;
+    const map = mapRef.current;
+    if (!map || !baseRef.current) return;
+    (async () => {
+      const L = await import("leaflet");
+      if (cancelled || !mapRef.current) return;
+      baseRef.current?.remove();
+      const url = base === "osm"
+        ? "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        : "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
+      const attribution = base === "osm"
+        ? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        : "Tiles &copy; Esri";
+      baseRef.current = L.tileLayer(url, { attribution, maxZoom: 19 }).addTo(map);
+    })();
+    return () => { cancelled = true; };
   }, [base]);
 
   return <div className="territory-map">
@@ -81,7 +88,3 @@ export default function MapaCalorTerritorial({ puntos = [] }: Props) {
   </div>;
 }
 
-function requireLeafletLayer() {
-  // La importación del módulo ocurre únicamente en el navegador.
-  return (window as unknown as { L?: typeof import("leaflet") }).L!;
-}
