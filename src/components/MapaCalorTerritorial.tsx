@@ -37,7 +37,8 @@ export default function MapaCalorTerritorial({ puntos = SIN_PUNTOS }: Props) {
         heat = heatFactory(puntos.map(p => [p.lat, p.lng, Math.max(0, Math.min(1, p.intensidad))]), {
           radius: 28, blur: 20, maxZoom: 17,
           gradient: { 0.2: "#ef4444", 0.5: "#eab308", 0.8: "#22c55e" },
-        }).addTo(map);
+        });
+        heat.addTo(map);
         heatRef.current = heat;
       }
       setListo(true);
