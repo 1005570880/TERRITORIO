@@ -1,13 +1,32 @@
 # TERRITORIO
 
-Plataforma de gestión territorial y participación comunitaria.
+Plataforma de gestión territorial, participación ciudadana y trazabilidad comunitaria.
 
-## Estado actual
-Primera interfaz navegable de demostración construida con Next.js 15, React y TypeScript. Incluye resumen, directorio con búsqueda, formulario local de registro, vista territorial ilustrativa y agenda.
+## Módulos implementados en esta versión
 
-**Importante:** los registros de esta versión son datos de demostración y se mantienen solo en el estado del navegador. No hay autenticación ni persistencia conectada. No ingresar datos personales reales hasta implementar y verificar consentimiento, seguridad, control de acceso y políticas de tratamiento.
+- **Resumen:** indicadores operativos de solicitudes, compromisos y actividades.
+- **Territorio:** mapa base y componente de cobertura geográfica agregada.
+- **Organizaciones:** directorio institucional y comunitario.
+- **Solicitudes:** registro, búsqueda y actualización del estado de necesidades ciudadanas.
+- **Agenda:** registro y consulta de actividades comunitarias.
+- **Tareas:** compromisos, responsables, fechas límite y estados.
+- **Observación:** fichas de trazabilidad documental para formularios y resultados oficiales agregados.
+- **Analítica:** indicadores operativos agregados.
+
+## Estado técnico
+
+Esta entrega es una **interfaz funcional de demostración**. Las altas y cambios se conservan únicamente en el estado de la sesión del navegador; al recargar la página se reinician. Todavía no hay autenticación, base de datos, almacenamiento documental ni persistencia conectada.
+
+No ingresar información personal real ni documentos reservados hasta implementar y verificar autenticación, autorización, políticas de acceso, cifrado, retención y procedimientos de protección de datos.
+
+## Privacidad y alcance
+
+TERRITORIO está orientado a gestión comunitaria y participación ciudadana. El directorio se limita a organizaciones y canales institucionales autorizados. La observación electoral se restringe a trazabilidad de documentos y resultados oficiales agregados. La aplicación no incorpora perfiles de votantes, inferencias de intención de voto, segmentación política individual ni domicilios o ubicaciones personales en mapas.
+
+El tratamiento de datos personales deberá cumplir la Ley 1581 de 2012 y las normas concordantes, con finalidad determinada, minimización, autorización cuando corresponda, controles de acceso y mecanismos para ejercer los derechos de los titulares.
 
 ## Desarrollo
+
 ```bash
 npm install
 npm run dev
@@ -15,11 +34,6 @@ npm run dev
 
 Abrir http://localhost:3000.
 
-## Próximos pasos
-- Conectar Supabase Auth y PostgreSQL con políticas RLS.
-- Implementar consentimiento informado y gestión de derechos de titulares conforme a la Ley 1581 de 2012.
-- Reemplazar datos ilustrativos por registros autorizados.
-- Integrar mapa con cartografía y ubicaciones voluntariamente suministradas.
-- Configurar variables de entorno desde `.env.example`.
+## Variables de entorno previstas
 
-La aplicación está diseñada para gestión comunitaria no partidista. No incluye inferencias de intención de voto ni segmentación electoral.
+Copiar `.env.example` y configurar las credenciales únicamente en el entorno de despliegue cuando se integre Supabase. Nunca publicar claves privadas en el repositorio.
